@@ -2,22 +2,32 @@ import React, { useState, useEffect } from 'react'
 
 const toppingsChecklist = ['pepperoni', 'extraCheese', 'sausage', 'mushroom']
 
-export default function Pizza(props) {
+export default function Form(props) {
 
-    const {formValues, inputChange, formSubmit, formErrors, pizzas} = props
+    const {formValues, 
+      change, 
+      submit, 
+      formErrors, 
+      pizzas
+    } = props
 
       const onChange = event => {
         const { name, value, checked, type } = event.target;
         const valueToUse = type === 'checkbox' ? checked : value;
-        inputChange (name, valueToUse)
+        change (name, valueToUse);
       }
       const onSubmit = event => {
         event.preventDefault()
-        formSubmit();
+        submit();
       }
 
   return (
+
+
     <div className='pizza container'>
+    <div className='errors'>
+    <div>{formErrors['name-input']}</div>
+    </div>
       <form id='pizza-form' onSubmit = {onSubmit}>
       {pizzas.name ?(
       <div className = 'activeOrder'>
@@ -34,7 +44,7 @@ export default function Pizza(props) {
           <input
           type = 'text'
           id = 'name-input'
-          name = 'name'
+          name = 'name-input'
           value = {pizzas.name}
           onChange = {onChange}
           />
@@ -95,15 +105,15 @@ export default function Pizza(props) {
         <label>Special Instructions:
           <input
           onChange={onChange}
-          name='special'
+          name='special-text'
           type='text'
-          id='special'
+          id='special-text'
           value={pizzas.special}
           />
         </label>
 
       </div>
-      <button id='submit'>Submit</button>
+      <button id='order-button'>Submit</button>
 
       </form>
       {/* {/* {

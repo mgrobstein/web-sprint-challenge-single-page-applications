@@ -8,18 +8,18 @@ import Home from './Home';
 import './App.css';
 
 const initialFormValues = {
-  name: '',
+  "name-input": '',
   size: '',
   pepperoni: false,
   extraCheese: false,
   sausage: false,
   mushroom: false,
-  special:''
+  "special-text":''
 }
 const initialFormErrors = {
-  name: '',
+  "name-input": '',
   size: '',
-  special:''
+  "special-text":''
 }
 const initialPizzas = []
 
@@ -48,22 +48,25 @@ const App = () => {
 
   const formSubmit = () => {
     const newPizza = {
-      name: formValues.name.trim(),
+      "name-input": formValues['name-input'].trim(),
       size: formValues.size.trim(),
       pepperoni: formValues.pepperoni,
       extraCheese: formValues.extraCheese,
       sausage: formValues.sausage,
       mushroom: formValues.mushroom,
-      special: formValues.special
+      "special-text": formValues["special-text"]
     }
     // 🔥 STEP 8- POST NEW FRIEND USING HELPER
-
+    if (formErrors["name-input"]) {
+      setFormErrors(formErrors["name-input"]);
+      return;
+    }
 
     axios.post('https://reqres.in/api/orders', newPizza)
     .then(resp => {
       setPizzas(newPizza)
       setFormValues(initialFormValues)
-    })
+    }).catch(err => console.error(err))
 
   }
   
@@ -72,16 +75,17 @@ const App = () => {
     <div className="wrapper">
       <h1>Lambda Eats</h1>
       <header><h1>Pizza Time</h1></header>
+      {/* { formErrors && <h2 className="error">{formErrors}</h2> } */}
 <Route exact path="/pizza">
-    <Form formErrors = {formErrors} 
+    <Form 
+    formErrors={formErrors}
     id = "pizza-form" 
     formValues = {formValues} 
-    setFormValues = {setFormValues} 
-    inputChange = {inputChange} 
-    formSubmit = {formSubmit} 
+    change = {inputChange} 
+    submit = {formSubmit} 
     pizzas = {pizzas} />
 </Route>
-<Route path ="/">
+<Route exact path ="/">
   <Home />
 </Route>
 </div>
